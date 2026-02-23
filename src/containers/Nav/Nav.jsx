@@ -9,9 +9,9 @@ const Nav = () => {
       </section>
 
       <section className="Nav_menu">
-        <NavButton/>
-        <NavButton/>
-        <NavButton/>
+        <NavButton name ="Select pokemon"/>
+        <NavButton name ="Collected pokemon"/>
+        <NavButton name ="Logout"/>
       </section>
 
       <section className="Nav_user">

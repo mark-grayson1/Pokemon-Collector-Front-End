@@ -1,0 +1,28 @@
+.pokemon-card {
+    border: 10px solid black;
+    padding: 25px;
+    border-radius: 5%;
+    background-color: rgb(221, 173, 210);
+    display: flex;
+    flex-direction: column;
+    font-family: "Courier New", Courier, monospace;
+    width: 200px;
+    height: 400px;
+    
+        &_image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: auto;
+    }
+
+    
+    // &_info {
+    //     display: flex;
+    //     flex-direction: column;
+    // }
+
+}
+ 

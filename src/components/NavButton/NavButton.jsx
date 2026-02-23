@@ -1,9 +1,9 @@
 import "./NavButton.scss";
 
-const NavButton = () => {
+const NavButton = ({ name }) => {
   return (
     <div className="NavButton">
-      navbutton
+      {name}
     </div>
   )
 }
