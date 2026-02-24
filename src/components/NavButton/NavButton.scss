@@ -1,0 +1,27 @@
+@import "./../../variables";
+
+.NavButton {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100px;
+    background-color:$octonary-color;
+    background: linear-gradient(to right, $octonary-color, $quinary-color);
+    border-radius: 80px;
+    height: 45px;
+    margin: 5px;
+    padding: 0;
+    border: 3px dashed $primary-color;
+    display: inline-block;
+    line-height: 50px;
+    text-align: center;
+
+    &:hover {
+        background: linear-gradient(to right, darken($octonary-color, 10%), darken($quinary-color, 10%));
+    }
+
+    &:active {
+        background: linear-gradient(to right, darken($octonary-color, 20%), darken($quinary-color, 20%));
+    }
+}
+
