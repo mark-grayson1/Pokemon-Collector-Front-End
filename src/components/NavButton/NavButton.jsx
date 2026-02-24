@@ -2,9 +2,9 @@ import "./NavButton.scss";
 
 const NavButton = ({ name }) => {
   return (
-    <div className="NavButton">
+    <button className="NavButton">
       {name}
-    </div>
+    </button>
   )
 }
 
