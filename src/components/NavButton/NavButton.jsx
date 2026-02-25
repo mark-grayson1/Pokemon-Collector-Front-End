@@ -1,11 +1,7 @@
 import "./NavButton.scss";
 
 const NavButton = ({ name }) => {
-  return (
-    <button className="NavButton">
-      {name}
-    </button>
-  )
-}
+  return <div className="NavButton">{name}</div>;
+};
 
-export default NavButton
+export default NavButton;
