@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
   const loginWithGoogle = () => {
-    window.location.href =
-      "https://pokemon-collector-backend-production.up.railway.app/oauth2/authorization/google";
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
 
   const loginWithGithub = () => {
-    window.location.href =
-      "https://pokemon-collector-backend-production.up.railway.app/oauth2/authorization/github";
+    window.location.href = "http://localhost:8080/oauth2/authorization/github";
   };
 
   return (

@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
-	<StrictMode>
-		<BrowserRouter basename="/Pokemon-Collector-Front-End/">
-			<App />
-		</BrowserRouter>
-	</StrictMode>,
+  <StrictMode>
+    <BrowserRouter basename="/Pokemon-Collector-Front-End">
+      <App />
+    </BrowserRouter>
+  </StrictMode>,
 );
