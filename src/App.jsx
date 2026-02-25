@@ -1,73 +1,90 @@
-
 import "./App.css";
 import Nav from "./containers/Nav/Nav";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Selected from "./containers/Selected/Selected";
-import { getOnlyUrl } from "./functions";
-import {Routes,Route} from "react-router-dom";
-import { useState,useEffect } from "react";
-import { cleanPokemonData } from "./functions";
+import Landing from "./components/Landing/Landing";
+import { getOnlyUrl, cleanPokemonData } from "./functions";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function App() {
-
-	//https://www.bing.com/search?q=prsomise.all%20json%20example&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=prsomise.all%20json%20example&sc=4-25&sk=&cvid=A2ADFC58C228496BB03E201B0F58EB89
-
-	// What do we want here? 
-	// We want 20 pokemon data points (first 20 in the API DB) - we only need the url endpoint for each of them to be collected in an array to start with
-
-	// Create a function that fetches X amount of pokemon
-	// Create a function that fetches the date for a single pokemon (this can directly return a clean pokemon data object)
-	// Both these function can live in their module
-	// Dashboard component will then call Promise.all after having called the fetch X pokemon
-
-  //fetch makeup data from makeup api
   const allPokemonDataUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
 
-  //useState to store makeup data
   const [pokemonData, setPokemonData] = useState([]);
-  const [favouritePokemon, setFavouritePokemon] = useState([]); //move to dashboard
+  const [isAuthed, setIsAuthed] = useState(null); // null = checking, true/false after
 
-  //retrieve makeup data from api
-  const getPokemons = async () => {
-    const response = await fetch(allPokemonDataUrl)
-    const pokemonData = await response.json()
-	const data = pokemonData.results 
+  const location = useLocation();
+  const navigate = useNavigate();
 
-	const pokemonDataUrls = getOnlyUrl(data)
+  const hideNav = location.pathname === "/landing";
 
-	const pokemonDataArray = await Promise.all(pokemonDataUrls.map(async (url) => {
-		const response = await fetch(url)
-		const pokemonData = await response.json()
-		const cleanedData =  cleanPokemonData(pokemonData)
-		return cleanedData
-	}));
-	
-	setPokemonData(pokemonDataArray)
-	console.log(pokemonDataArray)
+  // 1) Check login status (backend session)
+  useEffect(() => {
+    fetch("http://localhost:8080/api/users/me", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsAuthed(true);
+          // if user is on landing but already authed, send them home
+          if (location.pathname === "/landing") navigate("/");
+        } else {
+          setIsAuthed(false);
+          // if user tries to access a protected page, send them to landing
+          if (location.pathname !== "/landing") navigate("/landing");
+        }
+      })
+      .catch(() => {
+        setIsAuthed(false);
+        if (location.pathname !== "/landing") navigate("/landing");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 2) Load Pokémon only once authenticated (optional but recommended)
+  useEffect(() => {
+    if (isAuthed !== true) return;
+
+    const getPokemons = async () => {
+      const response = await fetch(allPokemonDataUrl);
+      const pokemonData = await response.json();
+      const data = pokemonData.results;
+
+      const pokemonDataUrls = getOnlyUrl(data);
+
+      const pokemonDataArray = await Promise.all(
+        pokemonDataUrls.map(async (url) => {
+          const response = await fetch(url);
+          const pokemonData = await response.json();
+          return cleanPokemonData(pokemonData);
+        }),
+      );
+
+      setPokemonData(pokemonDataArray);
+    };
+
+    getPokemons();
+  }, [isAuthed]);
+
+  // Optional: while checking auth, render nothing (or a loading message)
+  if (isAuthed === null) {
+    return <main className="main">Loading...</main>;
   }
 
-	//useEffect 
-	useEffect(() => {
-		getPokemons()
-	}, [])
+  return (
+    <main className="main">
+      {!hideNav && <Nav />}
 
-	useEffect(() => {
-		// Trigger POST request to update favourite pokemon in the backend whenever the favouritePokemon state changes
-	}, [favouritePokemon]);
+      <Routes>
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/" element={<Dashboard pokemonData={pokemonData} />} />
+        <Route path="/selected" element={<Selected />} />
 
-
-	//put data in dashboard
-
-
-	return (
-		<main className="main">
-			<Nav/>
-			<Routes>
-				pokemonData && <Route path="/" element={<Dashboard pokemonData={pokemonData}/>}   />
-				<Route path="selected" element={<Selected/>}   />
-			</Routes>
-		</main>
-	);
+        {/* fallback */}
+        <Route path="*" element={<Landing />} />
+      </Routes>
+    </main>
+  );
 }
 
 export default App;
