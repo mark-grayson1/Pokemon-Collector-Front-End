@@ -1,90 +1,93 @@
-import "./App.css";
-import Nav from "./containers/Nav/Nav";
-import Dashboard from "./containers/Dashboard/Dashboard";
-import Selected from "./containers/Selected/Selected";
-import Landing from "./containers/Landing/Landing";
-import { getOnlyUrl, cleanPokemonData } from "./functions";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import './App.css';
+import Nav from './containers/Nav/Nav';
+import Dashboard from './containers/Dashboard/Dashboard';
+import Selected from './containers/Selected/Selected';
+import Landing from './containers/Landing/Landing';
+import { getOnlyUrl, cleanPokemonData } from './functions';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function App() {
-	const allPokemonDataUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
+    const allPokemonDataUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
 
-	const [pokemonData, setPokemonData] = useState([]);
-	const [isAuthed, setIsAuthed] = useState(null);
+    const [pokemonData, setPokemonData] = useState([]);
+    const [isAuthed, setIsAuthed] = useState(null);
 
-	const location = useLocation();
-	const navigate = useNavigate();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-	const hideNav = location.pathname === "/landing";
+    const hideNav = location.pathname === '/landing';
 
-	useEffect(() => {
-		fetch(
-			"https://pokemon-collector-backend-production.up.railway.app/api/users/me",
-			{
-				credentials: "include",
-			},
-		)
-			.then((res) => {
-				if (res.ok) {
-					setIsAuthed(true);
-					if (location.pathname === "/landing") navigate("/");
-				} else {
-					setIsAuthed(false);
-					if (location.pathname !== "/landing") navigate("/landing");
-				}
-			})
-			.catch(() => {
-				setIsAuthed(false);
-				if (location.pathname !== "/landing") navigate("/landing");
-			});
-	}, []);
+    useEffect(() => {
+        fetch(
+            'https://pokemon-collector-backend-production.up.railway.app/api/users/me',
+            {
+                credentials: 'include',
+            },
+        )
+            .then((res) => {
+                if (res.ok) {
+                    setIsAuthed(true);
+                    if (location.pathname === '/landing') navigate('/ ');
+                } else {
+                    setIsAuthed(false);
+                    if (location.pathname !== '/landing') navigate('/landing');
+                }
+            })
+            .catch(() => {
+                setIsAuthed(false);
+                if (location.pathname !== '/landing') navigate('/landing');
+            });
+    }, []);
 
-	useEffect(() => {
-		if (isAuthed !== true) return;
+    useEffect(() => {
+        if (isAuthed !== true) return;
 
-		const getPokemons = async () => {
-			const response = await fetch(allPokemonDataUrl);
-			const pokemonData = await response.json();
-			const data = pokemonData.results;
+        const getPokemons = async () => {
+            const response = await fetch(allPokemonDataUrl);
+            const pokemonData = await response.json();
+            const data = pokemonData.results;
 
-			const pokemonDataUrls = getOnlyUrl(data);
+            const pokemonDataUrls = getOnlyUrl(data);
 
-			const pokemonDataArray = await Promise.all(
-				pokemonDataUrls.map(async (url) => {
-					const response = await fetch(url);
-					const pokemonData = await response.json();
-					return cleanPokemonData(pokemonData);
-				}),
-			);
+            const pokemonDataArray = await Promise.all(
+                pokemonDataUrls.map(async (url) => {
+                    const response = await fetch(url);
+                    const pokemonData = await response.json();
+                    return cleanPokemonData(pokemonData);
+                }),
+            );
 
-			setPokemonData(pokemonDataArray);
-		};
+            setPokemonData(pokemonDataArray);
+        };
 
-		getPokemons();
-	}, [isAuthed]);
+        getPokemons();
+    }, [isAuthed]);
 
-	if (isAuthed === null) {
-		return <main className="main">Loading...</main>;
-	}
+    if (isAuthed === null) {
+        return <main className="main">Loading...</main>;
+    }
 
-	return (
-		<main className="main">
-			{!hideNav && <Nav />}
+    return (
+        <main className="main">
+            {!hideNav && <Nav />}
 
-			<Routes>
-				<Route path="landing" element={<Landing />} />
-				<Route
-					path="/"
-					element={<Dashboard pokemonData={pokemonData} />}
-				/>
-				<Route path="/selected" element={<Selected />} />
+            {/* Clarify Login pgae and landing page */}
+            {/* user arrive on URL/ and see login buttons */}
+            {/* Once logged in user sees dashboard */}
+            {/* Fix the Auth logic to provide correct URL build up for this flow */}
 
-				{/* fallback */}
-				<Route path="*" element={<Landing />} />
-			</Routes>
-		</main>
-	);
+            <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route
+                    path="dashboard"
+                    element={<Dashboard pokemonData={pokemonData} />}
+                />
+                <Route path="selected" element={<Selected />} />
+                <Route path="*" element={<Landing />} />
+            </Routes>
+        </main>
+    );
 }
 
 export default App;
