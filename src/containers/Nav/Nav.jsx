@@ -1,5 +1,6 @@
 import NavButton from "../../components/NavButton/NavButton";
 import "./Nav.scss";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
@@ -9,8 +10,14 @@ const Nav = () => {
       </section>
 
       <section className="Nav_menu">
-        <NavButton name ="Select pokemon"/>
-        <NavButton name ="Collected pokemon"/>
+        <Link to="/">
+          <NavButton name ="Dashboard"/>
+        </Link>
+
+        <Link to="/selected">
+          <NavButton name ="Selected "/>
+        </Link>
+        
         <NavButton name ="Logout"/>
       </section>
 

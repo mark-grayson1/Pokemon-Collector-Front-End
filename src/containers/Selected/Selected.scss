@@ -1,12 +1,11 @@
 @import "./../../variables";
 
-.Dashboard {
+.Selected {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     background-color: $senary-color;
-
     width: 100%;
+    min-height: 100vh;
     
 }
