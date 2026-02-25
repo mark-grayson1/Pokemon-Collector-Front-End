@@ -1,31 +1,28 @@
 @import "./../../variables";
 .pokemon-card {
-    border: 5px solid $duodenary-color;
-    padding: 25px;
-    border-radius: 5%;
-    background-color: $undenary-color;
+  border: 5px solid $duodenary-color;
+  padding: 25px;
+  border-radius: 5%;
+  background-color: $undenary-color;
+  display: flex;
+  flex-direction: column;
+  font-family: "Courier New", Courier, monospace;
+  width: 200px;
+  height: 400px;
+  margin: 10px;
+  color: $duodenary-color;
+
+  &_image {
     display: flex;
-    flex-direction: column;
-    font-family: "Courier New", Courier, monospace;
-    width: 200px;
-    height: 400px;
-    margin: 10px;
-    color: $duodenary-color;
-    
-        &_image {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: auto;
-    }
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: auto;
+  }
 
-    
-    // &_info {
-    //     display: flex;
-    //     flex-direction: column;
-    // }
-
+  // &_info {
+  //     display: flex;
+  //     flex-direction: column;
+  // }
 }
- 
