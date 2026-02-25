@@ -2,7 +2,7 @@ import "./App.css";
 import Nav from "./containers/Nav/Nav";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Selected from "./containers/Selected/Selected";
-import Landing from "./components/Landing/Landing";
+import Landing from "./containers/Landing/Landing";
 import { getOnlyUrl, cleanPokemonData } from "./functions";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
