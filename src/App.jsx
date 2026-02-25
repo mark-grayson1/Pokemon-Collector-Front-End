@@ -73,7 +73,7 @@ function App() {
 			{!hideNav && <Nav />}
 
 			<Routes>
-				<Route path="/landing" element={<Landing />} />
+				<Route path="landing" element={<Landing />} />
 				<Route
 					path="/"
 					element={<Dashboard pokemonData={pokemonData} />}
