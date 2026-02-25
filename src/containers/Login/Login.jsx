@@ -20,7 +20,7 @@ const Login = () => {
           onClick={loginWithGoogle}
           style={{ marginRight: "10px", padding: "10px 20px" }}
         >
-          Login with Google Contine lalallala
+          Login with Google
         </button>
 
         <button onClick={loginWithGithub} style={{ padding: "10px 20px" }}>
